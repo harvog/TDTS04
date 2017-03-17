@@ -12,11 +12,13 @@ class ChatImpl extends ChatPOA
 {
     private ORB orb;
     private Map<String, ChatCallback> players = new HashMap<String, ChatCallback>();
+    private Map<ChatCallback, Integer> teams = new HashMap<ChatCallback, Integer>();
     private static final int BOARD_SIZE = 8;
     private static final int EMPTY = 0;
     private static final int CROSS = 1;
     private static final int CIRCLE = 2;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
+    private static boolean playing = false;
 
     public void setORB(ORB orb_val) {
         orb = orb_val;
@@ -81,6 +83,27 @@ class ChatImpl extends ChatPOA
 	    callobj.callback("You must join chat before posting");
 	}
     }
+    public String five(ChatCallback callobj, String team) {
+	if (teams.containsKey(callobj) || team.equals(""))  {
+	    return ("Name taken or session already has an active player");
+	}
+	if(team.equals("x")) {
+	    teams.put(callobj, CROSS);
+	}
+	else if(team.equals("o")) {
+	    teams.put(callobj, CIRCLE);
+	}
+	
+	if(playing) {
+	    printBoard(callobj);
+	}
+	else {
+	    playing = true;
+	    init(callobj);
+	    printBoard(callobj);
+	}
+	return ("You have joined team " + team);
+    }
     public void init(ChatCallback callobj) {
 	for(int y = 0; y < BOARD_SIZE; y++) {
 	    for(int x = 0; x < BOARD_SIZE; x++) {
@@ -110,11 +133,12 @@ class ChatImpl extends ChatPOA
 	callobj.callback("");
     }
     public void put(ChatCallback callobj, String msg) {
-	String[] move = new String[4];
+	String[] move = new String[3];
 	move = msg.replace(" ", "").split("");
+	callobj.callback("ASD: " + move[1] + " : " + move[2]);
 	int row = Integer.parseInt(move[1]);
 	int col = Integer.parseInt(move[2]);
-	int type = Integer.parseInt(move[3]);
+	int type = teams.get(callobj);
 
 	if (row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE && board[row][col] == EMPTY) {
             board[row][col] = type;
@@ -124,6 +148,8 @@ class ChatImpl extends ChatPOA
          }
 	if(hasWon(row, col, type)) {
 	    callobj.callback("YOU WON!!!!!!!!!");
+	    printBoard(callobj);
+	    playing = false;
 	}
     }
     public boolean hasWon(int row, int col, int type) {

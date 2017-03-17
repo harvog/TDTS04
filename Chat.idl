@@ -9,6 +9,7 @@ module ChatApp {
      void leave(in ChatCallback objref);
      void post(in ChatCallback objref, in string message);
      void printBoard(in ChatCallback objref);
+     string five(in ChatCallback objref, in string message);
      void init(in ChatCallback objref);
      void put(in ChatCallback objref, in string message);
      //boolean hasWon(in int row, in int col, in int type);

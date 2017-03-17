@@ -81,8 +81,7 @@ public class ChatClient
 		    chatImpl.post(cref, scan.nextLine());
 		    break;   
 		case "five" :
-		    chatImpl.init(cref);
-		    chatImpl.printBoard(cref);
+		    System.out.println(chatImpl.five(cref, scan.next()));
 		    break;
 		case "print" : 
 		    chatImpl.printBoard(cref);
