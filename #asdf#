@@ -1,0 +1,13 @@
+client1 -> callbackobj1
+
+client2 -> callbackobj2
+
+servern -> callbackobj[1,2]
+
+client1 -> post
+
+function post(asdf)
+
+	 for callbackobj send message
+
+players 

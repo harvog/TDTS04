@@ -1,0 +1,16 @@
+module ChatApp {
+   interface ChatCallback {
+      void callback(in string message);
+   };
+   interface Chat {
+     string say(in ChatCallback objref, in string message);
+     string join(in ChatCallback objref, in string message);
+     string list(in ChatCallback objref);
+     void leave(in ChatCallback objref);
+     void post(in ChatCallback objref, in string message);
+     void printBoard(in ChatCallback objref);
+     void init(in ChatCallback objref);
+     void put(in ChatCallback objref, in string message);
+     //boolean hasWon(in int row, in int col, in int type);
+   };
+};
